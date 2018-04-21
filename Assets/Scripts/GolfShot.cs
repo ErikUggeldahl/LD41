@@ -10,11 +10,30 @@ public class GolfShot : MonoBehaviour
     [SerializeField]
     Rigidbody ball;
 
-    float shotPower = 0.0f;
-    bool increasing = true;
+    [SerializeField]
+    Transform cameraTransform;
+    Camera cameraComponent;
+
+    [SerializeField]
+    Transform cameraTarget;
 
     const float SHOT_POWER_INCREMENT = 0.8f;
     const float ONE_HUNDRED_METRES_FORCE = 31f;
+
+    float shotPower = 0f;
+    bool increasing = true;
+
+    float forwardAngle = 0f;
+
+    readonly Vector3 CAMERA_ZOOM_MIN = new Vector3(0f, 0.5f, -1f);
+    readonly Vector3 CAMERA_ZOOM_MAX = new Vector3(0f, 0.5f, -1f) * 20f;
+    const float CAMERA_ZOOM_VELOCITY_FACTOR = 0.25f;
+    const float CAMERA_ZOOM_LERP_FACTOR = 3f;
+
+    const float CAMERA_FOV_MIN = 60f;
+    const float CAMERA_FOV_MAX = 75f;
+
+    float zoom = 0f;
 
     enum State
     {
@@ -26,44 +45,112 @@ public class GolfShot : MonoBehaviour
 
     void Start()
     {
+        cameraComponent = cameraTransform.GetComponent<Camera>();
     }
 
     void Update()
     {
+        RotateCamera();
+        ZoomCamera();
+
         if (state == State.Waiting && Input.GetKeyDown(KeyCode.Space))
         {
             state = State.Preparing;
         }
-        if (state == State.Preparing)
+        else if (state == State.Preparing)
         {
             if (Input.GetKeyUp(KeyCode.Space))
             {
                 state = State.Shooting;
                 Shoot();
+                StartCoroutine(CheckReset());
             }
             else
             {
                 Prepare();
             }
         }
+        else if (state == State.Shooting)
+        {
+            TrackBall();
+        }
+    }
+
+    void RotateCamera()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            var rotation = Input.GetAxis("Mouse X");
+            forwardAngle += rotation;
+            cameraTarget.rotation = Quaternion.Euler(0f, forwardAngle, 0f);
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
+    void ZoomCamera()
+    {
+        zoom = Mathf.Clamp01(zoom + Input.GetAxis("Mouse ScrollWheel"));
+
+        var ballVelocityRatio = ball.velocity.magnitude / ONE_HUNDRED_METRES_FORCE;
+
+        var velocityZoom = Mathf.Lerp(0f, CAMERA_ZOOM_VELOCITY_FACTOR, ballVelocityRatio);
+        var idealPosition = Vector3.Lerp(CAMERA_ZOOM_MIN, CAMERA_ZOOM_MAX, zoom + velocityZoom);
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, idealPosition, Time.deltaTime * CAMERA_ZOOM_LERP_FACTOR);
+
+        var idealFOV = Mathf.Lerp(CAMERA_FOV_MIN, CAMERA_FOV_MAX, ballVelocityRatio);
+        cameraComponent.fieldOfView = Mathf.Lerp(cameraComponent.fieldOfView, idealFOV, Time.deltaTime);
     }
 
     void Prepare()
     {
-        var increment = SHOT_POWER_INCREMENT * Time.deltaTime * (increasing ? 1.0f : -1.0f);
+        var increment = SHOT_POWER_INCREMENT * Time.deltaTime * (increasing ? 1f : -1f);
         shotPower = Mathf.Clamp01(shotPower + increment);
 
-        if (Mathf.Approximately(shotPower, 1.0f) || Mathf.Approximately(shotPower, 0.0f))
+        if (Mathf.Approximately(shotPower, 1f) || Mathf.Approximately(shotPower, 0f))
         {
             increasing = !increasing;
         }
 
-        shotPowerMeter.localScale = new Vector3(1.0f, shotPower, 1.0f);
+        shotPowerMeter.localScale = new Vector3(1f, shotPower, 1f);
     }
 
     void Shoot()
     {
+        var forward = Quaternion.AngleAxis(forwardAngle, Vector3.up) * Vector3.forward;
+
         ball.isKinematic = false;
-        ball.AddForce(Vector3.Slerp(Vector3.forward, Vector3.up, 0.5f) * ONE_HUNDRED_METRES_FORCE * shotPower, ForceMode.VelocityChange);
+        ball.AddForce(Vector3.Slerp(forward, Vector3.up, 0.5f) * ONE_HUNDRED_METRES_FORCE * shotPower, ForceMode.VelocityChange);
+
+        shotPower = 0;
+    }
+
+    void TrackBall()
+    {
+        cameraTarget.position = ball.position;
+    }
+
+    IEnumerator CheckReset()
+    {
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+
+            if (ball.velocity.sqrMagnitude < 0.1f)
+            {
+                state = State.Waiting;
+                ball.isKinematic = true;
+                break;
+            }
+        }
     }
 }
