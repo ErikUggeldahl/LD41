@@ -12,10 +12,12 @@ public class GolfShot : MonoBehaviour
 
     [SerializeField]
     Transform cameraTransform;
-    Camera cameraComponent;
 
     [SerializeField]
     Transform cameraTarget;
+
+    [SerializeField]
+    LineRenderer trajectoryLine;
 
     const float SHOT_POWER_INCREMENT = 0.8f;
     const float ONE_HUNDRED_METRES_FORCE = 31f;
@@ -25,8 +27,11 @@ public class GolfShot : MonoBehaviour
 
     float forwardAngle = 0f;
 
-    readonly Vector3 CAMERA_ZOOM_MIN = new Vector3(0f, 0.5f, -1f);
-    readonly Vector3 CAMERA_ZOOM_MAX = new Vector3(0f, 0.5f, -1f) * 20f;
+    Camera cameraComponent;
+
+    const float CAMERA_X_OFFSET = -0.05f;
+    readonly Vector3 CAMERA_ZOOM_MIN = new Vector3(CAMERA_X_OFFSET, 0.5f, -1f);
+    readonly Vector3 CAMERA_ZOOM_MAX = new Vector3(CAMERA_X_OFFSET, 0.5f, -1f) * 20f;
     const float CAMERA_ZOOM_VELOCITY_FACTOR = 0.25f;
     const float CAMERA_ZOOM_LERP_FACTOR = 3f;
 
@@ -34,6 +39,11 @@ public class GolfShot : MonoBehaviour
     const float CAMERA_FOV_MAX = 75f;
 
     float zoom = 0f;
+
+    const int TRAJECTORY_POSITION_COUNT = 180;
+    Vector3[] trajectoryPositions;
+    GradientAlphaKey[] trajectoryAlphas;
+    const float TRAJECTORY_FADE_DURATION = 1f;
 
     enum State
     {
@@ -46,6 +56,10 @@ public class GolfShot : MonoBehaviour
     void Start()
     {
         cameraComponent = cameraTransform.GetComponent<Camera>();
+
+        trajectoryPositions = new Vector3[TRAJECTORY_POSITION_COUNT];
+        trajectoryLine.positionCount = trajectoryPositions.Length;
+        trajectoryAlphas = trajectoryLine.colorGradient.alphaKeys;
     }
 
     void Update()
@@ -56,6 +70,7 @@ public class GolfShot : MonoBehaviour
         if (state == State.Waiting && Input.GetKeyDown(KeyCode.Space))
         {
             state = State.Preparing;
+            ResetTrajectory();
         }
         else if (state == State.Preparing)
         {
@@ -64,10 +79,12 @@ public class GolfShot : MonoBehaviour
                 state = State.Shooting;
                 Shoot();
                 StartCoroutine(CheckReset());
+                StartCoroutine(FadeTrajectoryLine());
             }
             else
             {
                 Prepare();
+                SimulateTrajectory();
             }
         }
         else if (state == State.Shooting)
@@ -123,6 +140,29 @@ public class GolfShot : MonoBehaviour
 
         shotPowerMeter.localScale = new Vector3(1f, shotPower, 1f);
     }
+    
+    void ResetTrajectory()
+    {
+        trajectoryLine.colorGradient = GradientWithAlpha(trajectoryLine.colorGradient.colorKeys, trajectoryAlphas, 1f);
+        SimulateTrajectory();
+    }
+
+    void SimulateTrajectory()
+    {
+        var forward = Quaternion.AngleAxis(forwardAngle, Vector3.up) * Vector3.forward;
+        var initialVector = Vector3.Slerp(forward, Vector3.up, 0.5f);
+        var velocity = initialVector * ONE_HUNDRED_METRES_FORCE * shotPower;
+
+        trajectoryPositions[0] = ball.position;
+
+        for (var i = 1; i < trajectoryPositions.Length; i++)
+        {
+            velocity += Physics.gravity * Time.fixedDeltaTime;
+            trajectoryPositions[i] = trajectoryPositions[i - 1] + velocity * Time.fixedDeltaTime;
+        }
+
+        trajectoryLine.SetPositions(trajectoryPositions);
+    }
 
     void Shoot()
     {
@@ -152,5 +192,30 @@ public class GolfShot : MonoBehaviour
                 break;
             }
         }
+    }
+
+    IEnumerator FadeTrajectoryLine()
+    {
+        var alpha = 1f;
+        while (alpha > 0f)
+        {
+            alpha -= TRAJECTORY_FADE_DURATION * Time.deltaTime;
+            trajectoryLine.colorGradient = GradientWithAlpha(trajectoryLine.colorGradient.colorKeys, trajectoryAlphas, alpha);
+
+            yield return null;
+        }
+    }
+
+    Gradient GradientWithAlpha(GradientColorKey[] originalColors, GradientAlphaKey[] originalAlphas, float alpha)
+    {
+        var alphas = new GradientAlphaKey[originalAlphas.Length];
+        for (var i = 0; i < alphas.Length; i++)
+        {
+            alphas[i].time = originalAlphas[i].time;
+            alphas[i].alpha = originalAlphas[i].alpha * alpha;
+        }
+        var gradient = new Gradient();
+        gradient.SetKeys(originalColors, alphas);
+        return gradient;
     }
 }
