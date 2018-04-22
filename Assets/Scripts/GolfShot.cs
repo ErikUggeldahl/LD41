@@ -5,6 +5,9 @@ using UnityEngine;
 public class GolfShot : MonoBehaviour
 {
     [SerializeField]
+    BuildSystem buildSystem;
+
+    [SerializeField]
     RectTransform shotPowerMeter;
 
     [SerializeField]
@@ -50,6 +53,7 @@ public class GolfShot : MonoBehaviour
         Waiting,
         Preparing,
         Shooting,
+        Building,
     }
     State state = State.Waiting;
 
@@ -72,6 +76,10 @@ public class GolfShot : MonoBehaviour
             state = State.Preparing;
             ResetTrajectory();
         }
+        else if (state == State.Waiting && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            StartBuilding(BuildSystem.TowerType.Regular);
+        }
         else if (state == State.Preparing)
         {
             if (Input.GetKeyUp(KeyCode.Space))
@@ -87,7 +95,7 @@ public class GolfShot : MonoBehaviour
                 SimulateTrajectory();
             }
         }
-        else if (state == State.Shooting)
+        else if (state == State.Shooting || state == State.Building)
         {
             TrackBall();
         }
@@ -116,16 +124,25 @@ public class GolfShot : MonoBehaviour
 
     void ZoomCamera()
     {
-        zoom = Mathf.Clamp01(zoom + Input.GetAxis("Mouse ScrollWheel"));
+        Vector3 idealPosition;
+        if (state != State.Building)
+        {
+            zoom = Mathf.Clamp01(zoom - Input.GetAxis("Mouse ScrollWheel"));
 
-        var ballVelocityRatio = ball.velocity.magnitude / ONE_HUNDRED_METRES_FORCE;
+            var ballVelocityRatio = ball.velocity.magnitude / ONE_HUNDRED_METRES_FORCE;
 
-        var velocityZoom = Mathf.Lerp(0f, CAMERA_ZOOM_VELOCITY_FACTOR, ballVelocityRatio);
-        var idealPosition = Vector3.Lerp(CAMERA_ZOOM_MIN, CAMERA_ZOOM_MAX, zoom + velocityZoom);
+            var velocityZoom = Mathf.Lerp(0f, CAMERA_ZOOM_VELOCITY_FACTOR, ballVelocityRatio);
+            idealPosition = Vector3.Lerp(CAMERA_ZOOM_MIN, CAMERA_ZOOM_MAX, zoom + velocityZoom);
+
+            var idealFOV = Mathf.Lerp(CAMERA_FOV_MIN, CAMERA_FOV_MAX, ballVelocityRatio);
+            cameraComponent.fieldOfView = Mathf.Lerp(cameraComponent.fieldOfView, idealFOV, Time.deltaTime);
+        }
+        else
+        {
+            idealPosition = CAMERA_ZOOM_MAX;
+        }
+
         cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, idealPosition, Time.deltaTime * CAMERA_ZOOM_LERP_FACTOR);
-
-        var idealFOV = Mathf.Lerp(CAMERA_FOV_MIN, CAMERA_FOV_MAX, ballVelocityRatio);
-        cameraComponent.fieldOfView = Mathf.Lerp(cameraComponent.fieldOfView, idealFOV, Time.deltaTime);
     }
 
     void Prepare()
@@ -217,5 +234,21 @@ public class GolfShot : MonoBehaviour
         var gradient = new Gradient();
         gradient.SetKeys(originalColors, alphas);
         return gradient;
+    }
+
+    void StartBuilding(BuildSystem.TowerType towerType)
+    {
+        if (buildSystem.CanBuildTower(BuildSystem.TowerType.Regular))
+        {
+            state = State.Building;
+            buildSystem.BlueprintType = towerType;
+            buildSystem.enabled = true;
+        }
+    }
+
+    public void EndBuilding()
+    {
+        state = State.Waiting;
+        buildSystem.enabled = false;
     }
 }

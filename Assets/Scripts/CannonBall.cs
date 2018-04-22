@@ -28,7 +28,6 @@ public class CannonBall : MonoBehaviour
             return;
         }
 
-        //transform.Translate(transform.forward * SPEED * Time.deltaTime);
         transform.position += transform.forward * SPEED * Time.deltaTime;
 
         if (Vector3.Distance(transform.position, finalDestination) < HIT_DISTANCE)

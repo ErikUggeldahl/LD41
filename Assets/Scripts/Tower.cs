@@ -15,6 +15,9 @@ public class Tower : MonoBehaviour
     [SerializeField]
     GameObject cannonBallPrefab;
 
+    [SerializeField]
+    float targetingDistance = 20f;
+
     enum State
     {
         Targeting,
@@ -23,8 +26,8 @@ public class Tower : MonoBehaviour
     State state = State.Targeting;
 
     Enemy target;
-    const float TARGETING_DISTANCE = 20f;
     const float TARGETING_RATE_LIMIT = 0.5f;
+    public float TargetingDistance { get { return targetingDistance; } }
 
     const float SHOT_RATE = 2f;
     float timeSinceLastShot = 0f;
@@ -46,7 +49,7 @@ public class Tower : MonoBehaviour
 
     void Shoot()
     {
-        if (target == null || Vector3.Distance(target.transform.position, transform.position) > TARGETING_DISTANCE)
+        if (target == null || Vector3.Distance(target.transform.position, transform.position) > targetingDistance)
         {
             target = null;
             state = State.Targeting;
@@ -89,7 +92,7 @@ public class Tower : MonoBehaviour
             foreach (var enemy in enemies)
             {
                 float distance = Vector3.Distance(enemy.transform.position, transform.position);
-                if (distance < TARGETING_DISTANCE)
+                if (distance < targetingDistance)
                 {
                     state = State.Firing;
                     target = enemy;
