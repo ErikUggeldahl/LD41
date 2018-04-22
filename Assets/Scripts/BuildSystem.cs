@@ -38,6 +38,7 @@ public class BuildSystem : MonoBehaviour
     GameObject currentBlueprint;
 
     int gold = 50;
+    int Gold { get { return gold; } set { gold = value; goldText.text = gold.ToString(); } }
 
     const float MINIMUM_BUILD_RADIUS = 3f;
     const float BUILD_TIME = 2f;
@@ -45,7 +46,7 @@ public class BuildSystem : MonoBehaviour
 
     void Start()
     {
-        goldText.text = gold.ToString();
+        Gold = gold;
     }
 
     void OnEnable()
@@ -90,6 +91,11 @@ public class BuildSystem : MonoBehaviour
         }
     }
 
+    public void GainGold(int amount)
+    {
+        Gold += amount;
+    }
+
     public bool CanBuildTower(TowerType towerType)
     {
         if (gold < CostForTower(towerType))
@@ -127,8 +133,7 @@ public class BuildSystem : MonoBehaviour
     {
         state = State.Building;
 
-        gold -= CostForTower(BlueprintType);
-        goldText.text = gold.ToString();
+        Gold -= CostForTower(BlueprintType);
 
         currentBlueprint.SetActive(false);
         shotRadius.SetActive(false);

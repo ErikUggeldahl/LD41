@@ -8,6 +8,12 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     Transform healthbar;
 
+    [SerializeField]
+    BuildSystem buildSystem;
+
+    [SerializeField]
+    int goldGiven = 1;
+
     uint nodeIndex = 0;
     const float NODE_RADIUS = 3f;
 
@@ -55,6 +61,8 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
+            buildSystem.GainGold(goldGiven);
+
             Destroy(gameObject);
         }
     }
