@@ -122,6 +122,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4564849703110918}
+  - component: {fileID: 136066838427631748}
   - component: {fileID: 114575982205916524}
   m_Layer: 0
   m_Name: Enemy
@@ -603,6 +604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41c1e32afae11e3498de662bae931220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathingNetwork: {fileID: 0}
   healthbar: {fileID: 4325245513713114}
 --- !u!114 &114909782937587832
 MonoBehaviour:
@@ -615,3 +617,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b91a8e1adea3b45a071631b9300d3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &136066838427631748
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1421925267285910}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3824234
+  m_Height: 1.2851853
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.6379168, z: 0.0025014877}
