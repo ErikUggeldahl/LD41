@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
 
     const int TOTAL_HEALTH = 100;
     int health = TOTAL_HEALTH;
+    public int Health { get { return health; } }
 
     void Start()
     {
@@ -47,7 +48,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         health -= damage;
         healthbar.localScale = new Vector3((float)health / TOTAL_HEALTH, 1f, 1f);
