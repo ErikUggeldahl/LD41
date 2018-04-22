@@ -316,6 +316,16 @@ Prefab:
       propertyPath: buildSystem
       value: 
       objectReference: {fileID: 1627029625}
+    - target: {fileID: 114575982205916524, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
+        type: 2}
+      propertyPath: PathingNetwork
+      value: 
+      objectReference: {fileID: 1141934292}
+    - target: {fileID: 114575982205916524, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
+        type: 2}
+      propertyPath: BuildSystem
+      value: 
+      objectReference: {fileID: 1627029625}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a7c5b4a94f11b24e91110bb3b4de621, type: 2}
   m_IsPrefabParent: 0
@@ -358,29 +368,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114714761663150894, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
+        type: 2}
+      propertyPath: pathingNetwork
+      value: 
+      objectReference: {fileID: 1141934292}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0bf4a4db6baf89c47830ebd5a95a8a49, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &866873345 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1421925267285910, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
-    type: 2}
-  m_PrefabInternal: {fileID: 1265076859}
---- !u!54 &866873348
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 866873345}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 84
-  m_CollisionDetection: 0
 --- !u!1 &1141934291
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,12 +484,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114575982205916524, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
         type: 2}
-      propertyPath: pathingNetwork
+      propertyPath: PathingNetwork
       value: 
       objectReference: {fileID: 1141934292}
     - target: {fileID: 114575982205916524, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
         type: 2}
-      propertyPath: buildSystem
+      propertyPath: BuildSystem
       value: 
       objectReference: {fileID: 1627029625}
     m_RemovedComponents: []
@@ -810,6 +805,16 @@ Prefab:
       propertyPath: buildSystem
       value: 
       objectReference: {fileID: 1627029625}
+    - target: {fileID: 114575982205916524, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
+        type: 2}
+      propertyPath: PathingNetwork
+      value: 
+      objectReference: {fileID: 1141934292}
+    - target: {fileID: 114575982205916524, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
+        type: 2}
+      propertyPath: BuildSystem
+      value: 
+      objectReference: {fileID: 1627029625}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a7c5b4a94f11b24e91110bb3b4de621, type: 2}
   m_IsPrefabParent: 0
@@ -986,6 +991,16 @@ Prefab:
     - target: {fileID: 114575982205916524, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
         type: 2}
       propertyPath: buildSystem
+      value: 
+      objectReference: {fileID: 1627029625}
+    - target: {fileID: 114575982205916524, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
+        type: 2}
+      propertyPath: PathingNetwork
+      value: 
+      objectReference: {fileID: 1141934292}
+    - target: {fileID: 114575982205916524, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
+        type: 2}
+      propertyPath: BuildSystem
       value: 
       objectReference: {fileID: 1627029625}
     m_RemovedComponents: []

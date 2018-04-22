@@ -2,5 +2,5 @@
 
 public class PathingNetwork : MonoBehaviour
 {
-    public Transform[] nodes;
+    public Transform[] Nodes;
 }

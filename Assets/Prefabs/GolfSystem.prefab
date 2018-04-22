@@ -202,6 +202,7 @@ GameObject:
   - component: {fileID: 4987094004453494}
   - component: {fileID: 114088290916741800}
   - component: {fileID: 114191043538227490}
+  - component: {fileID: 114714761663150894}
   m_Layer: 0
   m_Name: GolfSystem
   m_TagString: Untagged
@@ -947,6 +948,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114714761663150894
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1485387054660076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29a34186db3bcff47a2ee5818cdec056, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildSystem: {fileID: 114191043538227490}
+  pathingNetwork: {fileID: 0}
+  enemyPrefab: {fileID: 1421925267285910, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
+    type: 2}
 --- !u!114 &114742953784779072
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -3,18 +3,18 @@
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    PathingNetwork pathingNetwork;
+    public PathingNetwork PathingNetwork;
 
     [SerializeField]
     Transform healthbar;
 
     [SerializeField]
-    BuildSystem buildSystem;
+    public BuildSystem BuildSystem;
 
     [SerializeField]
     int goldGiven = 1;
 
-    uint nodeIndex = 0;
+    uint nodeIndex = 1;
     const float NODE_RADIUS = 3f;
 
     Rigidbody rb;
@@ -33,12 +33,12 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        float distanceToNode = Vector3.Distance(pathingNetwork.nodes[nodeIndex].position, transform.position);
+        float distanceToNode = Vector3.Distance(PathingNetwork.Nodes[nodeIndex].position, transform.position);
 
         if (distanceToNode < NODE_RADIUS)
         {
             nodeIndex++;
-            if (nodeIndex == pathingNetwork.nodes.Length)
+            if (nodeIndex == PathingNetwork.Nodes.Length)
             {
                 Destroy(gameObject);
             }
@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.LookAt(pathingNetwork.nodes[nodeIndex]);
+        transform.LookAt(PathingNetwork.Nodes[nodeIndex]);
         if (rb.velocity.sqrMagnitude < MAX_SPEED_SQ)
         {
             rb.AddForce(transform.forward * WALK_FORCE, ForceMode.VelocityChange);
@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
-            buildSystem.GainGold(goldGiven);
+            BuildSystem.GainGold(goldGiven);
 
             Destroy(gameObject);
         }
