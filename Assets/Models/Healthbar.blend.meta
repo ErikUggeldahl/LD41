@@ -1,58 +1,21 @@
 fileFormatVersion: 2
-guid: ab7a0be547fd7fe469df4b3d984d16e3
-timeCreated: 1524324318
+guid: c575edee94a462c4cacfdec042591146
+timeCreated: 1524376055
 licenseType: Pro
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Eyes
-    100004: Head
-    100006: Helmet
-    100008: Horns
-    100010: Tusks
-    100012: Body
-    100014: HealthBar
-    100016: HealthBarParent
     400000: //RootNode
-    400002: Eyes
-    400004: Head
-    400006: Helmet
-    400008: Horns
-    400010: Tusks
-    400012: Body
-    400014: HealthBar
-    400016: HealthBarParent
     2100000: unnamed
-    2100002: Material
     2300000: //RootNode
-    2300002: Eyes
-    2300004: Head
-    2300006: Helmet
-    2300008: Horns
-    2300010: Tusks
-    2300012: Body
-    2300014: HealthBar
     3300000: //RootNode
-    3300002: Eyes
-    3300004: Head
-    3300006: Helmet
-    3300008: Horns
-    3300010: Tusks
-    3300012: Body
-    3300014: HealthBar
-    4300000: Body
-    4300002: Head
-    4300004: Helmet
-    4300006: Horns
-    4300008: Eyes
-    4300010: Tusks
-    4300012: HealthBar
+    4300000: HealthBar
     7400000: Default Take
     9500000: //RootNode
   externalObjects: {}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -105,7 +68,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
@@ -124,7 +87,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
