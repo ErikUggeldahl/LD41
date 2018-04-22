@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BuildSystem : MonoBehaviour
@@ -13,6 +14,9 @@ public class BuildSystem : MonoBehaviour
 
     [SerializeField]
     Text goldText;
+
+    [SerializeField]
+    Text livesText;
 
     [SerializeField]
     GameObject shotRadius;
@@ -37,6 +41,9 @@ public class BuildSystem : MonoBehaviour
     public TowerType BlueprintType { get; set; }
     GameObject currentBlueprint;
 
+    int lives = 50;
+    int Lives { get { return lives ; } set { lives = value; livesText.text = lives.ToString(); } }
+
     int gold = 50;
     int Gold { get { return gold; } set { gold = value; goldText.text = gold.ToString(); } }
 
@@ -47,6 +54,7 @@ public class BuildSystem : MonoBehaviour
     void Start()
     {
         Gold = gold;
+        Lives = lives;
     }
 
     void OnEnable()
@@ -94,6 +102,15 @@ public class BuildSystem : MonoBehaviour
     public void GainGold(int amount)
     {
         Gold += amount;
+    }
+
+    public void LoseLife()
+    {
+        Lives -= 1;
+        if (lives == 0)
+        {
+            SceneManager.LoadScene("Title");
+        }
     }
 
     public bool CanBuildTower(TowerType towerType)

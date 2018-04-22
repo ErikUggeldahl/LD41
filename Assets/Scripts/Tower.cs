@@ -16,7 +16,7 @@ public class Tower : MonoBehaviour
     GameObject cannonBallPrefab;
 
     [SerializeField]
-    float targetingDistance = 20f;
+    float targetingDistance = 30f;
 
     enum State
     {

@@ -91,6 +91,8 @@ public class Tutorial : MonoBehaviour
             mainCamera.enabled = true;
             spawnCamera.enabled = false;
         }
+
+        yield return DisplayTimedMessage("Have care your majesty! Do not let too many of the beasts get to the coffers or all is lost!", 7f);
     }
 
     WaitForSeconds DisplayTimedMessage(string text, float duration)
