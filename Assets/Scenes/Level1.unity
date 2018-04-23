@@ -208,6 +208,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 114909534893029726, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
+        type: 2}
+      propertyPath: spawnCamera
+      value: 
+      objectReference: {fileID: 1091513988}
     - target: {fileID: 114714761663150894, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
         type: 2}
       propertyPath: pathingNetwork
@@ -218,46 +223,6 @@ Prefab:
       propertyPath: pathingNetwork2
       value: 
       objectReference: {fileID: 1526385864}
-    - target: {fileID: 114909534893029726, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
-        type: 2}
-      propertyPath: spawnCamera
-      value: 
-      objectReference: {fileID: 1091513988}
-    - target: {fileID: 224381614983945128, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224381614983945128, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: -800
-      objectReference: {fileID: 0}
-    - target: {fileID: 114657009611415200, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
-        type: 2}
-      propertyPath: m_FontData.m_FontSize
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 114657009611415200, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
-        type: 2}
-      propertyPath: m_FontData.m_MaxSize
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 224381614983945128, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 114657009611415200, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
-        type: 2}
-      propertyPath: m_FontData.m_Alignment
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224381614983945128, guid: 0bf4a4db6baf89c47830ebd5a95a8a49,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -300
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0bf4a4db6baf89c47830ebd5a95a8a49, type: 2}
   m_IsPrefabParent: 0
