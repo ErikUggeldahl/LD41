@@ -68,6 +68,8 @@ public class GolfShot : MonoBehaviour
 
     void Update()
     {
+        CheckForFalloff();
+
         RotateCamera();
         ZoomCamera();
 
@@ -79,6 +81,10 @@ public class GolfShot : MonoBehaviour
         else if (state == State.Waiting && Input.GetKeyDown(KeyCode.Alpha1))
         {
             StartBuilding(BuildSystem.TowerType.Regular);
+        }
+        else if (state == State.Waiting && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            StartBuilding(BuildSystem.TowerType.Strong);
         }
         else if (state == State.Preparing)
         {
@@ -98,6 +104,14 @@ public class GolfShot : MonoBehaviour
         else if (state == State.Shooting || state == State.Building)
         {
             TrackBall();
+        }
+    }
+
+    void CheckForFalloff()
+    {
+        if (ball.transform.position.y < -10f)
+        {
+            ball.transform.position = new Vector3(0f, 10f, 10f);
         }
     }
 
@@ -238,7 +252,7 @@ public class GolfShot : MonoBehaviour
 
     void StartBuilding(BuildSystem.TowerType towerType)
     {
-        if (buildSystem.CanBuildTower(BuildSystem.TowerType.Regular))
+        if (buildSystem.CanBuildTower(towerType))
         {
             state = State.Building;
             buildSystem.BlueprintType = towerType;

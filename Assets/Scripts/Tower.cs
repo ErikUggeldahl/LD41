@@ -29,10 +29,10 @@ public class Tower : MonoBehaviour
     const float TARGETING_RATE_LIMIT = 0.5f;
     public float TargetingDistance { get { return targetingDistance; } }
 
-    const float SHOT_RATE = 2f;
+    float shotRate = 2f;
     float timeSinceLastShot = 0f;
 
-    const int DAMAGE = 50;
+    int damage = 50;
 
 	void Start()
 	{
@@ -46,6 +46,14 @@ public class Tower : MonoBehaviour
             Shoot();
         }
 	}
+
+    public void MakeStrong()
+    {
+        damage = 150;
+        shotRate = 1.25f;
+        targetingDistance = 50f;
+        transform.localScale = Vector3.one * 2f;
+    }
 
     void Shoot()
     {
@@ -66,16 +74,16 @@ public class Tower : MonoBehaviour
 
         timeSinceLastShot += Time.deltaTime;
 
-        if (timeSinceLastShot >= SHOT_RATE)
+        if (timeSinceLastShot >= shotRate)
         {
-            timeSinceLastShot -= SHOT_RATE;
+            timeSinceLastShot -= shotRate;
 
             var cannonBall = Instantiate(cannonBallPrefab, cannonBallSpawnLocation.position, Quaternion.identity);
             var cannonBallScript = cannonBall.GetComponent<CannonBall>();
             cannonBallScript.Target = target;
-            cannonBallScript.Damage = DAMAGE;
+            cannonBallScript.Damage = damage;
             
-            if (target.Health - DAMAGE <= 0)
+            if (target.Health - damage <= 0)
             {
                 target = null;
                 state = State.Targeting;

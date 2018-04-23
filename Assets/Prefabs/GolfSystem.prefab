@@ -895,7 +895,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.8
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1005,6 +1005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   golf: {fileID: 114088290916741800}
+  messageDisplay: {fileID: 114085812696226262}
   golfBall: {fileID: 4346124247540410}
   goldText: {fileID: 114400698491391322}
   livesText: {fileID: 114266375880442008}
@@ -1178,12 +1179,12 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 20c7e6844e3c6b94482027a9d9ba00d6, type: 3}
-    m_FontSize: 50
+    m_FontSize: 60
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 50
-    m_Alignment: 4
+    m_MaxSize: 60
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1203,8 +1204,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildSystem: {fileID: 114191043538227490}
   pathingNetwork: {fileID: 0}
+  pathingNetwork2: {fileID: 0}
+  messageDisplay: {fileID: 114085812696226262}
   enemyPrefab: {fileID: 1421925267285910, guid: 0a7c5b4a94f11b24e91110bb3b4de621,
     type: 2}
+  musicSource: {fileID: 82363720320406186}
+  tutorialMusic: {fileID: 8300000, guid: 31b479820f0637741bc89a7d92c41a3a, type: 3}
+  elapsedTime: 0
 --- !u!114 &114742953784779072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1551,8 +1557,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -65}
-  m_SizeDelta: {x: -400, y: 100}
+  m_AnchoredPosition: {x: 0, y: -300}
+  m_SizeDelta: {x: -800, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224460244945134642
 RectTransform:

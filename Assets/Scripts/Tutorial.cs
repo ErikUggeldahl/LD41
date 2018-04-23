@@ -76,7 +76,7 @@ public class Tutorial : MonoBehaviour
 
         yield return DisplayTimedMessage("Your eminence knows no bounds.", 4f);
 
-        yield return DisplayTimedMessage("... Your Majesty! Troubling news! Scouts have reported roving goblins in the area. Bowing to your infinite wisdom, may I propose we fortify?", 9f);
+        yield return DisplayTimedMessage("... Your Majesty! Troubling news! Scouts have reported roving goblins in the area. I will, of course, bow to your infinite wisdom, but may I propose we fortify?", 9f);
 
         messageDisplay.DisplayIndefiniteMessage("When you have comfortably chosen a spot, merely press 1 and I shall draft the blueprint.");
         while (!(Input.GetKeyUp(KeyCode.Alpha1))) yield return null;
@@ -111,6 +111,8 @@ public class Tutorial : MonoBehaviour
         }
 
         yield return DisplayTimedMessage("Have care your majesty! Do not let too many of the beasts get to the coffers or all is lost!", 7f);
+
+        yield return DisplayTimedMessage("You may also build larger towers by pressing 2! They cost but 40 gold pieces!", 20f);
     }
 
     WaitForSeconds DisplayTimedMessage(string text, float duration)

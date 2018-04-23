@@ -10,6 +10,9 @@ public class BuildSystem : MonoBehaviour
     GolfShot golf;
 
     [SerializeField]
+    MessageDisplay messageDisplay;
+
+    [SerializeField]
     Transform golfBall;
 
     [SerializeField]
@@ -37,6 +40,7 @@ public class BuildSystem : MonoBehaviour
     public enum TowerType
     {
         Regular,
+        Strong,
     }
     public TowerType BlueprintType { get; set; }
     GameObject currentBlueprint;
@@ -47,7 +51,8 @@ public class BuildSystem : MonoBehaviour
     int gold = 50;
     int Gold { get { return gold; } set { gold = value; goldText.text = gold.ToString(); } }
 
-    const float MINIMUM_BUILD_RADIUS = 3f;
+    const float MINIMUM_TOWER_BUILD_RADIUS = 4f;
+    const float MINIMUM_NODE_BUILD_RADIUS = 10f;
     const float BUILD_TIME = 2f;
     const float BUILD_RATE = 1f / BUILD_TIME;
 
@@ -69,6 +74,14 @@ public class BuildSystem : MonoBehaviour
                 {
                     currentBlueprint = regularTowerBlueprint;
                     targetingDistance = regularTower.GetComponent<Tower>().TargetingDistance;
+                    currentBlueprint.transform.localScale = Vector3.one;
+                    break;
+                }
+            case TowerType.Strong:
+                {
+                    currentBlueprint = regularTowerBlueprint;
+                    targetingDistance = 50f;
+                    currentBlueprint.transform.localScale = Vector3.one * 2f;
                     break;
                 }
         }
@@ -117,6 +130,7 @@ public class BuildSystem : MonoBehaviour
     {
         if (gold < CostForTower(towerType))
         {
+            messageDisplay.DisplayTimedMessage("Not enough gold!", 10f);
             return false;
         }
 
@@ -128,9 +142,29 @@ public class BuildSystem : MonoBehaviour
             var golfBallPosition = golfBall.position;
             golfBallPosition.y = 0;
 
-            if (Vector3.Distance(towerPosition, golfBallPosition) < MINIMUM_BUILD_RADIUS)
+            if (Vector3.Distance(towerPosition, golfBallPosition) < MINIMUM_TOWER_BUILD_RADIUS)
             {
+                messageDisplay.DisplayTimedMessage("Too close to another tower", 10f);
                 return false;
+            }
+        }
+
+        var spawnNetworks = FindObjectsOfType<PathingNetwork>();
+        foreach (var spawnNetwork in spawnNetworks)
+        {
+            var spawnNodes = spawnNetwork.GetComponentsInChildren<Transform>();
+            foreach (var node in spawnNodes)
+            {
+                var nodePosition = node.transform.position;
+                nodePosition.y = 0;
+                var golfBallPosition = golfBall.position;
+                golfBallPosition.y = 0;
+
+                if (Vector3.Distance(nodePosition, golfBallPosition) < MINIMUM_NODE_BUILD_RADIUS)
+                {
+                    messageDisplay.DisplayTimedMessage("Too close to an enemy pathing node!", 10f);
+                    return false;
+                }
             }
         }
 
@@ -142,6 +176,7 @@ public class BuildSystem : MonoBehaviour
         switch (tower)
         {
             case TowerType.Regular: return 10;
+            case TowerType.Strong: return 40;
             default: throw new InvalidOperationException();
         }
     }
@@ -156,17 +191,23 @@ public class BuildSystem : MonoBehaviour
         shotRadius.SetActive(false);
 
         GameObject tower = Instantiate(regularTower, golfBall.position, Quaternion.identity);
+        Tower towerScript = tower.GetComponent<Tower>();
+
+        if (BlueprintType == TowerType.Strong)
+        {
+            towerScript.MakeStrong();
+        }
+        float finalScale = tower.transform.localScale.y;
         tower.transform.localScale = new Vector3(1f, 0.01f, 1f);
 
-        Tower towerScript = tower.GetComponent<Tower>();
         towerScript.enabled = false;
 
         Transform teePoint = tower.transform.Find("TeePoint");
 
-        while (tower.transform.localScale.y < 1f)
+        while (tower.transform.localScale.y < finalScale)
         {
-            var newScale = Mathf.Clamp01(tower.transform.localScale.y + BUILD_RATE * Time.deltaTime);
-            tower.transform.localScale = new Vector3(1f, newScale, 1f);
+            var newScale = Mathf.Clamp(tower.transform.localScale.y + BUILD_RATE * Time.deltaTime, 0f, finalScale);
+            tower.transform.localScale = new Vector3(finalScale, newScale, finalScale);
 
             golfBall.position = teePoint.position;
 
