@@ -19,6 +19,15 @@ public class Tutorial : MonoBehaviour
     [SerializeField]
     Camera spawnCamera;
 
+    [SerializeField]
+    AudioSource musicSource;
+
+    [SerializeField]
+    AudioClip tutorialMusic;
+
+    [SerializeField]
+    AudioClip level1Music;
+
     Coroutine tutorialCoroutine;
     bool skipped = false;
     bool fastText = false;
@@ -35,9 +44,7 @@ public class Tutorial : MonoBehaviour
             skipped = true;
 
             StopCoroutine(tutorialCoroutine);
-            messageDisplay.DisplayIndefiniteMessage("");
-
-            spawner.StartWaves();
+            StartCoroutine(InitialSpawnCutscene());
         }
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -48,6 +55,9 @@ public class Tutorial : MonoBehaviour
 
     IEnumerator RunTutorial()
     {
+        musicSource.clip = tutorialMusic;
+        musicSource.Play();
+
         yield return null;
         yield return DisplayTimedMessage("Your Majesty. Please allow me to welcome you to our humble gouf course.", 8f);
 
@@ -76,11 +86,19 @@ public class Tutorial : MonoBehaviour
 
         yield return DisplayTimedMessage("May our meager construction raise you to the heavens. Do not trouble yourself about the materials! I will deduct a mere 10 gold from the coffers.", 9f);
 
+        StartCoroutine(InitialSpawnCutscene());
+    }
+
+    IEnumerator InitialSpawnCutscene()
+    {
         if (spawnCamera)
         {
             mainCamera.enabled = false;
             spawnCamera.enabled = true;
         }
+
+        musicSource.clip = level1Music;
+        musicSource.Play();
 
         spawner.StartWaves();
 
